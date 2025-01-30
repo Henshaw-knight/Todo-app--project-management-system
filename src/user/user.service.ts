@@ -71,7 +71,16 @@ export class UserService {
     })
   }
 
-  // async logout(@Req)
+  async logout(@Req() req: Request, @Res() res: Response) {
+    const clearCookie = res.clearCookie('isAuthenticated');
+
+    const response = res.send(`User successfully logout`);
+
+    return {
+      clearCookie,
+      response
+    }
+  }
 
   findAll() {
     return `This action returns all user`;

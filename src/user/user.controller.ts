@@ -19,10 +19,10 @@ export class UserController {
     return this.userService.signIn(loginDto, req, res);
   }
 
-  // @Post('logout')
-  // logout(@Req() req: Request, @Res res: Response) {
-  //   return this.userService.logout(req, res);
-  // }
+  @Post('logout')
+  logout(@Req() req: Request, @Res() res: Response) {
+    return this.userService.logout(req, res);
+  }
 
   @Get()
   findAll() {
