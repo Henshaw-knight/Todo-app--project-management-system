@@ -45,7 +45,8 @@ export class UserService {
   async signIn(payload: LoginDto, @Req() req: Request, @Res() res: Response) {
     const { email, password} = payload;
 
-    const user = await this.userRepo.findOneBy({ email });
+    // const user = await this.userRepo.findOneBy({ email });
+    const user = await this.userRepo.createQueryBuilder("user").addSelect("user.password").where("user.email = :email", {email:payload.email}).getOne()
 
     if (!user) {
       throw new HttpException('No email found', 400)
@@ -86,8 +87,9 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.userRepo.find();
+    // return `This action returns a #${id} user`;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

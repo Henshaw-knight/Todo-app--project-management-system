@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { Request, Response } from 'express'; 
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/guard/role.guard';
+import { Roles } from 'src/guard/role';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +28,8 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles('user')
   findAll() {
     return this.userService.findAll();
   }

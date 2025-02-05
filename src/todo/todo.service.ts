@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Todo } from './entities/todo.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class TodoService {
-  create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+  constructor(@InjectRepository(Todo) private readonly todoRepo: Repository<Todo>){}
+
+  async create(payload: CreateTodoDto, user: User) {
+    const todo = new Todo();
+    todo.userId = user.id;
+    todo.title = payload.title;
+    todo.description = payload.description;
+    Object.assign(todo, payload);
+    this.todoRepo.create(todo);
+    return await this.todoRepo.save(todo);    
   }
 
   findAll() {
