@@ -83,13 +83,13 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.userRepo.find();
+    // return `This action returns all user`;
   }
 
-  async findOne(id: number) {
-    return await this.userRepo.find();
-    // return `This action returns a #${id} user`;
+  findOne(id: number) {
+    return `This action returns a #${id} user`;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
